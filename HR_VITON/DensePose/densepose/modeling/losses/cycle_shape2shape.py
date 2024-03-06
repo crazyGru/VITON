@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 
-import random
 from typing import Tuple
 import torch
 from torch import nn
@@ -11,6 +10,7 @@ from detectron2.config import CfgNode
 from densepose.structures.mesh import create_mesh
 
 from .utils import sample_random_indices
+import secrets
 
 
 class ShapeToShapeCycleLoss(nn.Module):
@@ -26,7 +26,7 @@ class ShapeToShapeCycleLoss(nn.Module):
         self.all_shape_pairs = [
             (x, y) for i, x in enumerate(self.shape_names) for y in self.shape_names[i + 1 :]
         ]
-        random.shuffle(self.all_shape_pairs)
+        secrets.SystemRandom().shuffle(self.all_shape_pairs)
         self.cur_pos = 0
         self.norm_p = cfg.MODEL.ROI_DENSEPOSE_HEAD.CSE.SHAPE_TO_SHAPE_CYCLE_LOSS.NORM_P
         self.temperature = cfg.MODEL.ROI_DENSEPOSE_HEAD.CSE.SHAPE_TO_SHAPE_CYCLE_LOSS.TEMPERATURE
@@ -42,7 +42,7 @@ class ShapeToShapeCycleLoss(nn.Module):
             tuple(str, str): a pair of different mesh names
         """
         if self.cur_pos >= len(self.all_shape_pairs):
-            random.shuffle(self.all_shape_pairs)
+            secrets.SystemRandom().shuffle(self.all_shape_pairs)
             self.cur_pos = 0
         shape_pair = self.all_shape_pairs[self.cur_pos]
         self.cur_pos += 1
