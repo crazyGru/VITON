@@ -1,16 +1,16 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-import random
 import unittest
 
 from densepose.data.video import FirstKFramesSelector, LastKFramesSelector, RandomKFramesSelector
+import secrets
 
 
 class TestFrameSelector(unittest.TestCase):
     def test_frame_selector_random_k_1(self):
         _SEED = 43
         _K = 4
-        random.seed(_SEED)
+        secrets.SystemRandom().seed(_SEED)
         selector = RandomKFramesSelector(_K)
         frame_tss = list(range(0, 20, 2))
         _SELECTED_GT = [0, 8, 4, 6]
@@ -20,7 +20,7 @@ class TestFrameSelector(unittest.TestCase):
     def test_frame_selector_random_k_2(self):
         _SEED = 43
         _K = 10
-        random.seed(_SEED)
+        secrets.SystemRandom().seed(_SEED)
         selector = RandomKFramesSelector(_K)
         frame_tss = list(range(0, 6, 2))
         _SELECTED_GT = [0, 2, 4]

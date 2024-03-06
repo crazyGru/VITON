@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-import random
 import unittest
 from typing import Any, Iterable, Iterator, Tuple
 
 from densepose.data import CombinedDataLoader
+import secrets
 
 
 def _grouper(iterable: Iterable[Any], n: int, fillvalue=None) -> Iterator[Tuple[Any]]:
@@ -33,7 +33,7 @@ class TestCombinedDataLoader(unittest.TestCase):
         loader2 = _grouper([f"2_{i}" for i in range(11)], 3)
         batch_size = 4
         ratios = (0.1, 0.9)
-        random.seed(43)
+        secrets.SystemRandom().seed(43)
         combined = CombinedDataLoader((loader1, loader2), batch_size, ratios)
         BATCHES_GT = [
             ["1_0", "1_1", "2_0", "2_1"],

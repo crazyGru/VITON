@@ -2,7 +2,6 @@
 
 import contextlib
 import os
-import random
 import tempfile
 import unittest
 import torch
@@ -10,6 +9,7 @@ import torchvision.io as io
 
 from densepose.data.transform import ImageResizeTransform
 from densepose.data.video import RandomKFramesSelector, VideoKeyframeDataset
+import secrets
 
 try:
     import av
@@ -70,7 +70,7 @@ class TestVideoKeyframeDataset(unittest.TestCase):
         with temp_video(60, 300, 300, 5, video_codec="mpeg4") as (fname, data):
             video_list = [fname]
             category_list = [None]
-            random.seed(0)
+            secrets.SystemRandom().seed(0)
             frame_selector = RandomKFramesSelector(3)
             dataset = VideoKeyframeDataset(video_list, category_list, frame_selector)
             self.assertEqual(len(dataset), 1)
@@ -85,7 +85,7 @@ class TestVideoKeyframeDataset(unittest.TestCase):
         with temp_video(60, 300, 300, 5, video_codec="mpeg4") as (fname, data):
             video_list = [fname]
             category_list = [None]
-            random.seed(0)
+            secrets.SystemRandom().seed(0)
             frame_selector = RandomKFramesSelector(1)
             transform = ImageResizeTransform()
             dataset = VideoKeyframeDataset(video_list, category_list, frame_selector, transform)
