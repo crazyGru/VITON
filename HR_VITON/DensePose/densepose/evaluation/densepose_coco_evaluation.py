@@ -5,13 +5,14 @@
 # LICENSE file in the root directory of this source tree.
 # This is a modified version of cocoeval.py where we also have the densepose evaluation.
 
+import fickling
+
 __author__ = "tsungyi"
 
 import copy
 import datetime
 import logging
 import numpy as np
-import pickle
 import time
 from collections import defaultdict
 from enum import Enum
@@ -169,7 +170,7 @@ class DensePoseCocoEval(object):
             )
 
         with open(pdist_matrix_fpath, "rb") as hFile:
-            arrays = pickle.load(hFile, encoding="latin1")
+            arrays = fickling.load(hFile, encoding="latin1")
         self.Pdist_matrix = arrays["Pdist_matrix"]
         self.Part_ids = np.array(SMPL_subdiv["Part_ID_subdiv"].squeeze())
         # Mean geodesic distances for parts.

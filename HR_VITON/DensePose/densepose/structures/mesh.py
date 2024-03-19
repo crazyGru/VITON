@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 
-import pickle
 from functools import lru_cache
 from typing import Dict, Optional, Tuple
 import torch
@@ -8,6 +7,7 @@ import torch
 from detectron2.utils.file_io import PathManager
 
 from densepose.data.meshes.catalog import MeshCatalog, MeshInfo
+import fickling
 
 
 def _maybe_copy_to_device(
@@ -137,7 +137,7 @@ def load_mesh_data(
     with PathManager.open(mesh_fpath, "rb") as hFile:
         # pyre-fixme[7]: Expected `Tuple[Optional[Tensor], Optional[Tensor]]` but
         #  got `Tensor`.
-        return torch.as_tensor(pickle.load(hFile)[field], dtype=torch.float).to(  # pyre-ignore[6]
+        return torch.as_tensor(fickling.load(hFile)[field], dtype=torch.float).to(  # pyre-ignore[6]
             device
         )
     return None
@@ -148,7 +148,7 @@ def load_mesh_auxiliary_data(
 ) -> Optional[torch.Tensor]:
     fpath_local = PathManager.get_local_path(fpath)
     with PathManager.open(fpath_local, "rb") as hFile:
-        return torch.as_tensor(pickle.load(hFile), dtype=torch.float).to(device)  # pyre-ignore[6]
+        return torch.as_tensor(fickling.load(hFile), dtype=torch.float).to(device)  # pyre-ignore[6]
     return None
 
 
@@ -157,7 +157,7 @@ def load_mesh_symmetry(
     symmetry_fpath: str, device: Optional[torch.device] = None
 ) -> Optional[Dict[str, torch.Tensor]]:
     with PathManager.open(symmetry_fpath, "rb") as hFile:
-        symmetry_loaded = pickle.load(hFile)  # pyre-ignore[6]
+        symmetry_loaded = fickling.load(hFile)  # pyre-ignore[6]
         symmetry = {
             "vertex_transforms": torch.as_tensor(
                 symmetry_loaded["vertex_transforms"], dtype=torch.long

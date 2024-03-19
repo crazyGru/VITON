@@ -2,7 +2,6 @@
 
 import logging
 import numpy as np
-import pickle
 from enum import Enum
 from typing import Optional
 import torch
@@ -13,6 +12,7 @@ from detectron2.utils.file_io import PathManager
 
 from .vertex_direct_embedder import VertexDirectEmbedder
 from .vertex_feature_embedder import VertexFeatureEmbedder
+import fickling
 
 
 class EmbedderType(Enum):
@@ -96,7 +96,7 @@ class Embedder(nn.Module):
         state_dict = None
         if fpath.endswith(".pkl"):
             with PathManager.open(fpath, "rb") as hFile:
-                state_dict = pickle.load(hFile, encoding="latin1")  # pyre-ignore[6]
+                state_dict = fickling.load(hFile, encoding="latin1")  # pyre-ignore[6]
         else:
             with PathManager.open(fpath, "rb") as hFile:
                 # pyre-fixme[6]: For 1st param expected `Union[PathLike[typing.Any],

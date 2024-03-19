@@ -1,12 +1,12 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 
-import pickle
 import torch
 from torch import nn
 
 from detectron2.utils.file_io import PathManager
 
 from .utils import normalize_embeddings
+import fickling
 
 
 class VertexDirectEmbedder(nn.Module):
@@ -56,7 +56,7 @@ class VertexDirectEmbedder(nn.Module):
             fpath (str): file path to load data from
         """
         with PathManager.open(fpath, "rb") as hFile:
-            data = pickle.load(hFile)  # pyre-ignore[6]
+            data = fickling.load(hFile)  # pyre-ignore[6]
             for name in ["embeddings"]:
                 if name in data:
                     getattr(self, name).copy_(
