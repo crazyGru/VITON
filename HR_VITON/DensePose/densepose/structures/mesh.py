@@ -70,7 +70,7 @@ class Mesh:
                     break
             self.device = torch.device("cpu") if self.device is None else self.device
 
-        assert all([var.device == self.device for var in all_fields if var is not None])
+        assert all(var.device == self.device for var in all_fields if var is not None)
         if symmetry:
             assert all(symmetry[key].device == self.device for key in symmetry)
         if texcoords and vertices:
